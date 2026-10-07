@@ -2,7 +2,7 @@
 
 An end-to-end **Data Engineering & Business Intelligence Pipeline** built with Python, Pandas, SQLAlchemy, and SQLite. This system extracts live repository metrics from the GitHub REST API v3, cleans and transforms raw data, loads it into a relational database warehouse, and visualizes market trends on an interactive Web Dashboard.
 
-Created by **[HARIKRISHNAN-R2004](https://github.com/HARIKRISHNAN-R2004)**.
+
 
 ---
 
@@ -117,9 +117,3 @@ python view_db.py
 
 ---
 
-## 👨‍💻 Author
-
-**HARIKRISHNAN R**  
-GitHub Profile: [https://github.com/HARIKRISHNAN-R2004](https://github.com/HARIKRISHNAN-R2004)  
-Project Category: Data Engineering & Analytics  
-License: MIT
