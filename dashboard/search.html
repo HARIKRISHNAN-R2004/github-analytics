@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live GitHub Repository Keyword Search</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-main: #0a0a0a;
+      --bg-card: #141414;
+      --bg-card-alt: #1c1c1c;
+      --border-color: #262626;
+      --border-accent: #facc15;
+      --accent-yellow: #facc15;
+      --accent-yellow-dark: #ca8a04;
+      --text-white: #ffffff;
+      --text-muted: #a1a1aa;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-white);
+      min-height: 100vh;
+      padding: 2rem;
+      line-height: 1.5;
+    }
+
+    .container { max-width: 1300px; margin: 0 auto; }
+
+    /* Header Navigation */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding: 1.25rem 1.75rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+
+    .brand-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text-white);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .brand-title span { color: var(--accent-yellow); }
+
+    .nav-links { display: flex; gap: 0.75rem; align-items: center; }
+    
+    .nav-btn {
+      text-decoration: none;
+      color: var(--text-muted);
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+    
+    .nav-btn:hover {
+      background: var(--bg-card-alt);
+      color: var(--text-white);
+      border-color: var(--border-color);
+    }
+    
+    .nav-btn.active {
+      background: var(--accent-yellow);
+      color: #000000;
+      border-color: var(--accent-yellow);
+    }
+
+    .author-link {
+      text-decoration: none;
+      color: var(--accent-yellow);
+      border: 1px solid var(--border-accent);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      transition: all 0.2s ease;
+    }
+    .author-link:hover {
+      background: var(--accent-yellow);
+      color: #000000;
+    }
+
+    /* Search Section */
+    .search-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 2.5rem;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .search-title {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .search-sub { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.75rem; }
+
+    .search-box {
+      display: flex;
+      max-width: 720px;
+      margin: 0 auto 1.5rem auto;
+      gap: 0.75rem;
+    }
+
+    .search-input {
+      flex: 1;
+      background: #000000;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 1rem 1.25rem;
+      color: var(--text-white);
+      font-size: 1rem;
+      font-family: 'Outfit', sans-serif;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-input:focus { border-color: var(--accent-yellow); }
+
+    .search-btn {
+      background: var(--accent-yellow);
+      color: #000000;
+      border: none;
+      border-radius: 6px;
+      padding: 1rem 1.75rem;
+      font-size: 1rem;
+      font-weight: 800;
+      font-family: 'Outfit', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .search-btn:hover { background: #eab308; }
+    .search-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Suggestion Pills */
+    .pills { display: flex; justify-content: center; flex-wrap: wrap; gap: 0.5rem; }
+    .pill {
+      background: var(--bg-card-alt);
+      border: 1px solid var(--border-color);
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.825rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .pill:hover {
+      background: var(--accent-yellow);
+      color: #000000;
+      border-color: var(--accent-yellow);
+    }
+
+    /* Loading Status */
+    .status-msg {
+      margin-top: 1.5rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--accent-yellow);
+      display: none;
+    }
+
+    /* Results Section */
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .repo-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-left: 4px solid var(--accent-yellow);
+      transition: border-color 0.2s;
+    }
+    .repo-card:hover { border-color: var(--border-accent); }
+
+    .repo-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--accent-yellow);
+      text-decoration: none;
+      margin-bottom: 0.5rem;
+      word-break: break-word;
+    }
+    .repo-title:hover { text-decoration: underline; }
+
+    .repo-desc {
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      line-height: 1.5;
+      margin-bottom: 1.25rem;
+      flex: 1;
+    }
+
+    .repo-stats {
+      display: flex;
+      gap: 1.25rem;
+      font-size: 0.875rem;
+      color: var(--text-white);
+      margin-bottom: 1rem;
+      padding-top: 0.85rem;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .lang-badge {
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: #262626;
+      color: var(--accent-yellow);
+      border: 1px solid #3f3f46;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 1.75rem 0;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border-color);
+      margin-top: 3rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <div class="brand-title">GitHub <span>Analytics</span> ETL</div>
+        <div style="font-size: 0.825rem; color: var(--text-muted); margin-top: 0.2rem;">Live Keyword Repository Search Engine</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <nav class="nav-links">
+          <a href="index.html" class="nav-btn">Warehouse Analytics</a>
+          <a href="search.html" class="nav-btn active">Keyword Search</a>
+        </nav>
+        <a href="https://github.com/HARIKRISHNAN-R2004" target="_blank" class="author-link">
+          HARIKRISHNAN-R2004
+        </a>
+      </div>
+    </header>
+
+    <!-- Search Section -->
+    <div class="search-section">
+      <h1 class="search-title">Keyword Repository Search</h1>
+      <p class="search-sub">Enter any custom keyword to fetch matching repositories live from GitHub API, run ETL transformation, and store analytics in real-time.</p>
+
+      <div class="search-box">
+        <input type="text" id="keyword-input" class="search-input" placeholder="Enter keyword (e.g. machine learning, agent, cybersecurity, flutter, react)..." />
+        <button id="search-btn" class="search-btn" onclick="performSearch()">Search GitHub</button>
+      </div>
+
+      <div class="pills">
+        <span class="pill" onclick="quickSearch('machine learning')">machine learning</span>
+        <span class="pill" onclick="quickSearch('cybersecurity')">cybersecurity</span>
+        <span class="pill" onclick="quickSearch('agent')">agent</span>
+        <span class="pill" onclick="quickSearch('react')">react</span>
+        <span class="pill" onclick="quickSearch('flutter')">flutter</span>
+        <span class="pill" onclick="quickSearch('blockchain')">blockchain</span>
+      </div>
+
+      <div id="status-msg" class="status-msg">
+        Running Live ETL Pipeline... Extracting, Transforming & Loading data...
+      </div>
+    </div>
+
+    <!-- Search Results Container -->
+    <div id="results-container" style="display: none;">
+      <div class="results-header">
+        <h2 id="results-heading" style="font-size: 1.25rem; font-weight: 800; text-transform: uppercase;">Search Results</h2>
+        <span id="results-count" class="lang-badge">0 Repositories Found</span>
+      </div>
+
+      <div id="results-grid" class="results-grid"></div>
+    </div>
+
+    <footer>
+      GitHub Repository Analytics ETL System &bull; Created by <a href="https://github.com/HARIKRISHNAN-R2004" target="_blank" style="color: var(--accent-yellow); text-decoration: none; font-weight: 700;">HARIKRISHNAN-R2004</a>
+    </footer>
+  </div>
+
+  <script>
+    async function performSearch() {
+      const input = document.getElementById('keyword-input');
+      const keyword = input.value.trim();
+
+      if (!keyword) {
+        alert("Please enter a keyword to search!");
+        return;
+      }
+
+      const searchBtn = document.getElementById('search-btn');
+      const statusMsg = document.getElementById('status-msg');
+      const resultsContainer = document.getElementById('results-container');
+      const resultsGrid = document.getElementById('results-grid');
+
+      searchBtn.disabled = true;
+      statusMsg.style.display = 'block';
+      resultsContainer.style.display = 'none';
+      resultsGrid.innerHTML = '';
+
+      try {
+        const response = await fetch(`/api/search?q=${encodeURIComponent(keyword)}`);
+        const data = await response.json();
+
+        statusMsg.style.display = 'none';
+        searchBtn.disabled = false;
+
+        if (data.error) {
+          alert("Error: " + data.error);
+          return;
+        }
+
+        document.getElementById('results-heading').innerText = `Results for "${data.keyword}"`;
+        document.getElementById('results-count').innerText = `${data.total_found} Repositories Extracted & Loaded`;
+        resultsContainer.style.display = 'block';
+
+        if (!data.repositories || data.repositories.length === 0) {
+          resultsGrid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 3rem;">No repositories found matching "${keyword}". Try another keyword!</div>`;
+          return;
+        }
+
+        data.repositories.forEach(repo => {
+          const card = document.createElement('div');
+          card.className = 'repo-card';
+          
+          card.innerHTML = `
+            <div>
+              <a href="${repo.url}" target="_blank" class="repo-title">${repo.full_name}</a>
+              <p class="repo-desc">${repo.description || 'No description provided.'}</p>
+            </div>
+            <div>
+              <div class="repo-stats">
+                <div>Stars: <strong style="color: var(--accent-yellow);">${repo.stars_count.toLocaleString()}</strong></div>
+                <div>Forks: <strong>${repo.forks_count.toLocaleString()}</strong></div>
+                <div>Issues: <strong>${repo.open_issues}</strong></div>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span class="lang-badge">${repo.primary_language || 'Other'}</span>
+                <a href="${repo.url}" target="_blank" style="color: var(--accent-yellow); font-size: 0.85rem; text-decoration: none; font-weight: 700;">View on GitHub &rarr;</a>
+              </div>
+            </div>
+          `;
+          resultsGrid.appendChild(card);
+        });
+
+      } catch (err) {
+        statusMsg.style.display = 'none';
+        searchBtn.disabled = false;
+        alert("Failed to connect to backend server: " + err.message);
+      }
+    }
+
+    function quickSearch(term) {
+      document.getElementById('keyword-input').value = term;
+      performSearch();
+    }
+
+    document.getElementById('keyword-input').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        performSearch();
+      }
+    });
+  </script>
+</body>
+</html>

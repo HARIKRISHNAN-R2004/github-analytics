@@ -1,0 +1,351 @@
+{
+  "generated_at": "2026-10-06",
+  "top_repositories": [
+    {
+      "repo_name": "flutter",
+      "owner": "flutter",
+      "primary_language": "Dart",
+      "stars_count": 179359,
+      "forks_count": 33240,
+      "open_issues": 13314
+    },
+    {
+      "repo_name": "flutter",
+      "owner": "flutter",
+      "primary_language": "Dart",
+      "stars_count": 179359,
+      "forks_count": 33240,
+      "open_issues": 13314
+    },
+    {
+      "repo_name": "flutter",
+      "owner": "flutter",
+      "primary_language": "Dart",
+      "stars_count": 179359,
+      "forks_count": 33240,
+      "open_issues": 13314
+    },
+    {
+      "repo_name": "flutter",
+      "owner": "flutter",
+      "primary_language": "Dart",
+      "stars_count": 179359,
+      "forks_count": 33240,
+      "open_issues": 13314
+    },
+    {
+      "repo_name": "flutter",
+      "owner": "flutter",
+      "primary_language": "Dart",
+      "stars_count": 179359,
+      "forks_count": 33241,
+      "open_issues": 13314
+    },
+    {
+      "repo_name": "rustdesk",
+      "owner": "rustdesk",
+      "primary_language": "Rust",
+      "stars_count": 125312,
+      "forks_count": 19491,
+      "open_issues": 183
+    },
+    {
+      "repo_name": "rustdesk",
+      "owner": "rustdesk",
+      "primary_language": "Rust",
+      "stars_count": 125311,
+      "forks_count": 19490,
+      "open_issues": 183
+    },
+    {
+      "repo_name": "rustdesk",
+      "owner": "rustdesk",
+      "primary_language": "Rust",
+      "stars_count": 125310,
+      "forks_count": 19489,
+      "open_issues": 182
+    },
+    {
+      "repo_name": "rustdesk",
+      "owner": "rustdesk",
+      "primary_language": "Rust",
+      "stars_count": 125310,
+      "forks_count": 19489,
+      "open_issues": 183
+    },
+    {
+      "repo_name": "rustdesk",
+      "owner": "rustdesk",
+      "primary_language": "Rust",
+      "stars_count": 125310,
+      "forks_count": 19489,
+      "open_issues": 183
+    }
+  ],
+  "language_summary": [
+    {
+      "primary_language": "Dart",
+      "total_repositories": 10,
+      "avg_stars": 68623.0,
+      "total_stars": 2882161,
+      "avg_forks": 7146.0
+    },
+    {
+      "primary_language": "Rust",
+      "total_repositories": 2,
+      "avg_stars": 94336.0,
+      "total_stars": 660349,
+      "avg_forks": 14564.0
+    },
+    {
+      "primary_language": "TypeScript",
+      "total_repositories": 7,
+      "avg_stars": 51824.0,
+      "total_stars": 621888,
+      "avg_forks": 3559.0
+    },
+    {
+      "primary_language": "Other",
+      "total_repositories": 19,
+      "avg_stars": 13331.0,
+      "total_stars": 333282,
+      "avg_forks": 1451.0
+    },
+    {
+      "primary_language": "PHP",
+      "total_repositories": 4,
+      "avg_stars": 36012.0,
+      "total_stars": 288096,
+      "avg_forks": 3607.0
+    },
+    {
+      "primary_language": "JavaScript",
+      "total_repositories": 13,
+      "avg_stars": 14741.0,
+      "total_stars": 235848,
+      "avg_forks": 2517.0
+    },
+    {
+      "primary_language": "Nunjucks",
+      "total_repositories": 1,
+      "avg_stars": 60852.0,
+      "total_stars": 121704,
+      "avg_forks": 10957.0
+    },
+    {
+      "primary_language": "Java",
+      "total_repositories": 1,
+      "avg_stars": 39940.0,
+      "total_stars": 79879,
+      "avg_forks": 3855.0
+    },
+    {
+      "primary_language": "Crystal",
+      "total_repositories": 1,
+      "avg_stars": 25147.0,
+      "total_stars": 50294,
+      "avg_forks": 2811.0
+    },
+    {
+      "primary_language": "HTML",
+      "total_repositories": 5,
+      "avg_stars": 6182.0,
+      "total_stars": 37091,
+      "avg_forks": 763.0
+    },
+    {
+      "primary_language": "Nim",
+      "total_repositories": 1,
+      "avg_stars": 14479.0,
+      "total_stars": 28958,
+      "avg_forks": 1370.0
+    },
+    {
+      "primary_language": "Jupyter Notebook",
+      "total_repositories": 2,
+      "avg_stars": 1039.0,
+      "total_stars": 2077,
+      "avg_forks": 263.0
+    },
+    {
+      "primary_language": "C#",
+      "total_repositories": 3,
+      "avg_stars": 627.0,
+      "total_stars": 1882,
+      "avg_forks": 335.0
+    },
+    {
+      "primary_language": "PowerShell",
+      "total_repositories": 2,
+      "avg_stars": 859.0,
+      "total_stars": 1717,
+      "avg_forks": 315.0
+    },
+    {
+      "primary_language": "Python",
+      "total_repositories": 4,
+      "avg_stars": 20.0,
+      "total_stars": 80,
+      "avg_forks": 5.0
+    },
+    {
+      "primary_language": "Kotlin",
+      "total_repositories": 1,
+      "avg_stars": 8.0,
+      "total_stars": 8,
+      "avg_forks": 1.0
+    },
+    {
+      "primary_language": "EJS",
+      "total_repositories": 3,
+      "avg_stars": 2.0,
+      "total_stars": 5,
+      "avg_forks": 0.0
+    },
+    {
+      "primary_language": "CSS",
+      "total_repositories": 1,
+      "avg_stars": 1.0,
+      "total_stars": 1,
+      "avg_forks": 0.0
+    },
+    {
+      "primary_language": "Assembly",
+      "total_repositories": 1,
+      "avg_stars": 1.0,
+      "total_stars": 1,
+      "avg_forks": 0.0
+    },
+    {
+      "primary_language": "C++",
+      "total_repositories": 2,
+      "avg_stars": 0.0,
+      "total_stars": 0,
+      "avg_forks": 0.0
+    }
+  ],
+  "top_topics": [
+    {
+      "topic": "flutter",
+      "repo_count": 12,
+      "avg_stars": 77290.0
+    },
+    {
+      "topic": "android",
+      "repo_count": 9,
+      "avg_stars": 75051.0
+    },
+    {
+      "topic": "javascript",
+      "repo_count": 8,
+      "avg_stars": 71607.0
+    },
+    {
+      "topic": "agrotech",
+      "repo_count": 8,
+      "avg_stars": 30.0
+    },
+    {
+      "topic": "ios",
+      "repo_count": 7,
+      "avg_stars": 76679.0
+    },
+    {
+      "topic": "powerbi",
+      "repo_count": 7,
+      "avg_stars": 2027.0
+    },
+    {
+      "topic": "python",
+      "repo_count": 6,
+      "avg_stars": 392.0
+    },
+    {
+      "topic": "macos",
+      "repo_count": 4,
+      "avg_stars": 96421.0
+    },
+    {
+      "topic": "windows",
+      "repo_count": 4,
+      "avg_stars": 96421.0
+    },
+    {
+      "topic": "html",
+      "repo_count": 4,
+      "avg_stars": 36620.0
+    }
+  ],
+  "community_engagement": [
+    {
+      "full_name": "microsoft/PowerBI-Developer-Samples",
+      "primary_language": "JavaScript",
+      "stars_count": 1958,
+      "forks_count": 1548,
+      "fork_ratio_pct": 79.06
+    },
+    {
+      "full_name": "microsoft/powerbi-desktop-samples",
+      "primary_language": "Other",
+      "stars_count": 2148,
+      "forks_count": 1167,
+      "fork_ratio_pct": 54.33
+    },
+    {
+      "full_name": "microsoft/PowerBI-JavaScript",
+      "primary_language": "TypeScript",
+      "stars_count": 1141,
+      "forks_count": 482,
+      "fork_ratio_pct": 42.24
+    },
+    {
+      "full_name": "LastAncientOne/Stock_Analysis_For_Quant",
+      "primary_language": "Jupyter Notebook",
+      "stars_count": 2065,
+      "forks_count": 517,
+      "fork_ratio_pct": 25.04
+    },
+    {
+      "full_name": "TabularEditor/TabularEditor",
+      "primary_language": "C#",
+      "stars_count": 1115,
+      "forks_count": 262,
+      "fork_ratio_pct": 23.5
+    },
+    {
+      "full_name": "h5bp/html5-boilerplate",
+      "primary_language": "JavaScript",
+      "stars_count": 57643,
+      "forks_count": 12252,
+      "fork_ratio_pct": 21.25
+    },
+    {
+      "full_name": "h5bp/html5-boilerplate",
+      "primary_language": "JavaScript",
+      "stars_count": 57643,
+      "forks_count": 12252,
+      "fork_ratio_pct": 21.25
+    },
+    {
+      "full_name": "flutter/flutter",
+      "primary_language": "Dart",
+      "stars_count": 179359,
+      "forks_count": 33240,
+      "fork_ratio_pct": 18.53
+    },
+    {
+      "full_name": "flutter/flutter",
+      "primary_language": "Dart",
+      "stars_count": 179359,
+      "forks_count": 33240,
+      "fork_ratio_pct": 18.53
+    },
+    {
+      "full_name": "flutter/flutter",
+      "primary_language": "Dart",
+      "stars_count": 179359,
+      "forks_count": 33240,
+      "fork_ratio_pct": 18.53
+    }
+  ]
+}

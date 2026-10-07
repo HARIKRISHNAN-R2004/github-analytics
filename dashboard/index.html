@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GitHub Repository Analytics ETL Dashboard</title>
+  <!-- Google Fonts & Chart.js -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --bg-main: #0a0a0a;
+      --bg-card: #141414;
+      --bg-card-alt: #1c1c1c;
+      --border-color: #262626;
+      --border-accent: #facc15;
+      --accent-yellow: #facc15;
+      --accent-yellow-dark: #ca8a04;
+      --text-white: #ffffff;
+      --text-muted: #a1a1aa;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-white);
+      min-height: 100vh;
+      padding: 2rem;
+      line-height: 1.5;
+    }
+
+    .container { max-width: 1400px; margin: 0 auto; }
+
+    /* Header Navigation */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding: 1.25rem 1.75rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+
+    .brand-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text-white);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .brand-title span { color: var(--accent-yellow); }
+
+    .brand-sub {
+      font-size: 0.825rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+    }
+
+    .nav-links { display: flex; gap: 0.75rem; align-items: center; }
+    
+    .nav-btn {
+      text-decoration: none;
+      color: var(--text-muted);
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+    
+    .nav-btn:hover {
+      background: var(--bg-card-alt);
+      color: var(--text-white);
+      border-color: var(--border-color);
+    }
+    
+    .nav-btn.active {
+      background: var(--accent-yellow);
+      color: #000000;
+      border-color: var(--accent-yellow);
+    }
+
+    .author-link {
+      text-decoration: none;
+      color: var(--accent-yellow);
+      border: 1px solid var(--border-accent);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      transition: all 0.2s ease;
+    }
+    .author-link:hover {
+      background: var(--accent-yellow);
+      color: #000000;
+    }
+
+    /* KPI Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      border-left: 4px solid var(--accent-yellow);
+      transition: border-color 0.2s ease;
+    }
+    .kpi-card:hover {
+      border-color: var(--border-accent);
+    }
+
+    .kpi-title {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .kpi-value {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--text-white);
+      margin: 0.3rem 0;
+    }
+    .kpi-sub { font-size: 0.8rem; color: var(--accent-yellow); font-weight: 600; }
+
+    /* Dashboard Grid */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 990px) {
+      .dashboard-grid { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+    }
+
+    .card-header {
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text-white);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Table Component */
+    .table-container { overflow-x: auto; max-height: 420px; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.875rem; }
+    th {
+      color: var(--accent-yellow);
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border-color);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+      position: sticky;
+      top: 0;
+      background: var(--bg-card);
+    }
+    td { padding: 0.85rem 1rem; border-bottom: 1px solid var(--border-color); }
+    tr:hover td { background: var(--bg-card-alt); }
+
+    .lang-badge {
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: #262626;
+      color: var(--accent-yellow);
+      border: 1px solid #3f3f46;
+    }
+    
+    .repo-link {
+      color: var(--text-white);
+      text-decoration: none;
+      font-weight: 700;
+      transition: color 0.2s;
+    }
+    .repo-link:hover { color: var(--accent-yellow); }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 1.75rem 0;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border-color);
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <div class="brand-title">GitHub <span>Analytics</span> ETL</div>
+        <div class="brand-sub">Production Data Warehouse & Analytics Engine</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <nav class="nav-links">
+          <a href="index.html" class="nav-btn active">Warehouse Analytics</a>
+          <a href="search.html" class="nav-btn">Keyword Search</a>
+        </nav>
+        <a href="https://github.com/HARIKRISHNAN-R2004" target="_blank" class="author-link">
+          HARIKRISHNAN-R2004
+        </a>
+      </div>
+    </header>
+
+    <!-- KPI Cards Grid -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-title">Repositories Analyzed</div>
+        <div class="kpi-value" id="kpi-total-repos">100</div>
+        <div class="kpi-sub">Target Language Ecosystems</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Total Stars Tracked</div>
+        <div class="kpi-value" id="kpi-total-stars">17.9M</div>
+        <div class="kpi-sub">Highest: Python Ecosystem</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Language Breakdown Rows</div>
+        <div class="kpi-value">406</div>
+        <div class="kpi-sub">Normalized Metrics</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Trending Topic Tags</div>
+        <div class="kpi-value">928</div>
+        <div class="kpi-sub">AI & Machine Learning</div>
+      </div>
+    </div>
+
+    <!-- Analytics Charts Row -->
+    <div class="dashboard-grid">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Total Stars by Programming Language</div>
+        </div>
+        <canvas id="langChart" height="220"></canvas>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Top Trending Topics & Categories</div>
+        </div>
+        <canvas id="topicsChart" height="220"></canvas>
+      </div>
+    </div>
+
+    <!-- Leaderboards & Tables Row -->
+    <div class="dashboard-grid">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Top Starred Repositories Leaderboard</div>
+        </div>
+        <div class="table-container">
+          <table id="leaderboard-table">
+            <thead>
+              <tr>
+                <th>Repository</th>
+                <th>Language</th>
+                <th>Stars</th>
+                <th>Forks</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Community Engagement (Fork Ratio)</div>
+        </div>
+        <div class="table-container">
+          <table id="engagement-table">
+            <thead>
+              <tr>
+                <th>Repository</th>
+                <th>Language</th>
+                <th>Stars</th>
+                <th>Fork Ratio</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      GitHub Repository Analytics ETL System &bull; Created by <a href="https://github.com/HARIKRISHNAN-R2004" target="_blank" style="color: var(--accent-yellow); text-decoration: none; font-weight: 700;">HARIKRISHNAN-R2004</a>
+    </footer>
+  </div>
+
+  <script>
+    async function loadDashboard() {
+      try {
+        const response = await fetch('dashboard_data.json');
+        const data = await response.json();
+
+        // 1. Language Bar Chart (Yellow Theme)
+        const langNames = data.language_summary.map(l => l.primary_language);
+        const langStars = data.language_summary.map(l => l.total_stars);
+
+        const ctx1 = document.getElementById('langChart').getContext('2d');
+        new Chart(ctx1, {
+          type: 'bar',
+          data: {
+            labels: langNames,
+            datasets: [{
+              label: 'Total Stars',
+              data: langStars,
+              backgroundColor: '#facc15',
+              hoverBackgroundColor: '#eab308',
+              borderRadius: 4,
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                backgroundColor: '#1c1c1c',
+                titleColor: '#facc15',
+                bodyColor: '#ffffff',
+                borderColor: '#3f3f46',
+                borderWidth: 1,
+                padding: 12,
+                titleFont: { family: 'Outfit', size: 14, weight: 'bold' },
+                bodyFont: { family: 'Outfit', size: 13 }
+              }
+            },
+            scales: {
+              y: { ticks: { color: '#a1a1aa', font: { family: 'Outfit' } }, grid: { color: '#262626' } },
+              x: { ticks: { color: '#ffffff', font: { family: 'Outfit', weight: 'bold' } }, grid: { display: false } }
+            }
+          }
+        });
+
+        // 2. Topics Doughnut Chart (Black & Yellow Variants)
+        const topicNames = data.top_topics.slice(0, 6).map(t => t.topic);
+        const topicCounts = data.top_topics.slice(0, 6).map(t => t.repo_count);
+
+        const ctx2 = document.getElementById('topicsChart').getContext('2d');
+        new Chart(ctx2, {
+          type: 'doughnut',
+          data: {
+            labels: topicNames,
+            datasets: [{
+              data: topicCounts,
+              backgroundColor: ['#facc15', '#ca8a04', '#a16207', '#52525b', '#3f3f46', '#27272a'],
+              borderWidth: 2,
+              borderColor: '#141414'
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'right',
+                labels: { color: '#ffffff', font: { family: 'Outfit', size: 13, weight: '600' }, padding: 14 }
+              }
+            }
+          }
+        });
+
+        // 3. Leaderboard Table
+        const leaderboardTbody = document.querySelector('#leaderboard-table tbody');
+        data.top_repositories.forEach(r => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><a href="https://github.com/${r.owner}/${r.repo_name}" target="_blank" class="repo-link">${r.owner}/${r.repo_name}</a></td>
+            <td><span class="lang-badge">${r.primary_language}</span></td>
+            <td style="font-weight: 700;">${r.stars_count.toLocaleString()}</td>
+            <td style="color: var(--text-muted);">${r.forks_count.toLocaleString()}</td>
+          `;
+          leaderboardTbody.appendChild(tr);
+        });
+
+        // 4. Engagement Table
+        const engagementTbody = document.querySelector('#engagement-table tbody');
+        data.community_engagement.forEach(r => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><a href="${r.url || '#'}" target="_blank" class="repo-link">${r.full_name}</a></td>
+            <td><span class="lang-badge">${r.primary_language}</span></td>
+            <td style="font-weight: 700;">${r.stars_count.toLocaleString()}</td>
+            <td style="color: var(--accent-yellow); font-weight: 800;">${r.fork_ratio_pct}%</td>
+          `;
+          engagementTbody.appendChild(tr);
+        });
+
+      } catch (err) {
+        console.error("Error loading dashboard_data.json:", err);
+      }
+    }
+
+    loadDashboard();
+  </script>
+</body>
+</html>
